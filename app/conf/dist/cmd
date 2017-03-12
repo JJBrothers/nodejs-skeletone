@@ -1,0 +1,11 @@
+-#!/bin/sh
+ssh -o "StrictHostKeyChecking no" root@121.140.166.147 -p 33 <<EOF
+ pm2 delete apiServer
+ cd /root
+ rm -rf nodejs-skeletone
+ git clone git@gitlab.com:jaehunpark-development/nodejs-skeletone.git
+ cd nodejs-skeletone
+ npm install --production
+ pm2 start bin/www.js --name apiServer
+ exit
+EOF

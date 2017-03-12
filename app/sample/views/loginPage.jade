@@ -1,0 +1,36 @@
+html
+  head
+    title this is sample
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  body
+    div.input
+      span.label id
+      input(type="text", name="id" id="id")
+    div.input
+      span.label password
+      input(type="password", name="password" id="password")
+    div.button
+      button(onclick="move()") 로그인
+
+script.
+  function move() {
+    //alert(document.getElementById("id").value);
+    //alert(document.getElementById("password").value);
+
+    $.ajax({
+        type: "get",
+        url: "login",
+        contentType: "application/json",
+        dataType: "json",
+        data: {
+            id : document.getElementById("id").value,
+            password : document.getElementById("password").value
+        },
+        success: function(response) {
+            console.log(response);
+        },
+        error: function(response) {
+            console.log(response);
+        }
+    });
+  }

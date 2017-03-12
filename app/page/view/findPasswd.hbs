@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>비밀번호 변경</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+      $(function(){        
+        if ('{{isAuthorized}}' === 'false'){
+          alert('권한이없습니다');
+          fn_close();
+        }
+      })
+
+      function fn_changePW(){
+        if(!$('#pw1').val().trim()){
+          alert('새로운 비밀번호를 입력해주세요');
+          return false;
+        }
+        if(!$('#pw2').val().trim()){
+          alert('비밀번호확인을 입력해주세요');
+          return false;
+        }
+
+        if($('#pw1').val().trim() !== $('#pw2').val().trim()){
+          alert('비밀번호가 일치하지않습니다');
+          return false;
+        }
+
+        $.ajax({
+          type:"POST",
+          url:`https://{{host}}/page/modifyPasswd`,
+          data:{
+            email : '{{email}}',
+            passwd : $('#pw1').val(),
+          },
+          success:function(result){
+            console.log(result);
+            if(result.data.resultCode === '001'){
+              alert('비밀번호 변경을 완료하였습니다')
+              fn_close();
+            }else{
+              alert('비밀번호 수정도중 에러가 발생하였습니다.')
+            }
+          },
+          error:function(e){
+            alert(e.responseText);
+          }
+       });
+
+      }
+
+      function fn_close(){
+        window.close(); // 일반적인 현재 창 닫기
+        window.open('about:blank','_self').self.close();  // IE에서 묻지 않고 창 닫기
+      }
+    </script>
+</head>
+<body>
+  <h3><b>비밀번호 변경</b></h3>
+  <div>
+
+    <span>새로운 비밀번호 : <input type="password" id="pw1" /><br></span>
+    <span>비밀번호 확인 : <input type="password" id="pw2" /></span>
+    <span><button type="button" onclick="fn_changePW();">변경</button></span>
+  </div>
+</body>
+</html>
